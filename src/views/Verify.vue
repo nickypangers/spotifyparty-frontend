@@ -1,7 +1,10 @@
 <template>
   <div class="verify">
     <p>Loading User...</p>
-    <p>{{status}}</p>
+    <p v-show="isLoading">ajax running</p>
+    <p>{{ status }}</p>
+
+    <button @click="viewUser">View User State</button>
   </div>
 </template>
 
@@ -13,13 +16,16 @@ export default {
   components: {},
   data() {
     return {
-      status: false
-    }
+      isLoading: true,
+      status: false,
+    };
   },
   created: function () {
+    console.log("user=" + JSON.stringify(this.$store.state.user));
+
     var code = this.$route.query.code;
 
-    var vue = this
+    var vue = this;
 
     $.ajax({
       type: "post",
@@ -32,10 +38,21 @@ export default {
       },
       success: function (response) {
         if (response.success) {
-          vue.status = true
+          console.log(response);
+          vue.status = true;
+          vue.$store.commit("addUser", response);
         }
       },
     });
+
+    $(document).ajaxStop(function () {
+      vue.isLoading = false;
+    });
+  },
+  methods: {
+    viewUser: function () {
+      console.log("user=" + JSON.stringify(this.$store.state.user));
+    },
   },
 };
 </script>
