@@ -1,6 +1,9 @@
 import { createRouter, createWebHistory } from "vue-router";
-import Home from "../views/Home.vue";
 import store from "@/store/index.js";
+import Home from "@/views/Home.vue";
+import Lobby from "@/views/Lobby.vue";
+import Verify from "@/views/Verify.vue";
+import Room from "@/views/Room.vue";
 
 function isAuthenticated() {
   return store.state.user != null;
@@ -11,38 +14,49 @@ const routes = [
     path: "/",
     name: "Home",
     component: () => Home,
+    beforeEnter(to, from, next) {
+      if (isAuthenticated()) {
+        next("/lobby");
+      } else {
+        next();
+      }
+    },
   },
   {
-    path: "/Lobby",
+    path: "/lobby",
     name: "Lobby",
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () =>
-      import(/* webpackChunkName: "about" */ "../views/Lobby.vue"),
+    component: () => Lobby,
     beforeEnter(to, from, next) {
       if (isAuthenticated()) {
         next();
       } else {
-        next("/verify");
+        next("/");
       }
     },
   },
   {
     path: "/verify",
     name: "Verify",
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () =>
-      import(/* webpackChunkName: "about" */ "../views/Verify.vue"),
-      beforeEnter(to, from, next) {
-        if (isAuthenticated()) {
-          next('/lobby')
-        } else {
-          next()
-        }
+    component: () => Verify,
+    beforeEnter(to, from, next) {
+      if (isAuthenticated()) {
+        next("/lobby");
+      } else {
+        next();
       }
+    },
+  },
+  {
+    path: "/room/:roomId",
+    name: "Room",
+    component: () => Room,
+    beforeEnter(to, from, next) {
+      if (isAuthenticated()) {
+        next();
+      } else {
+        next("/");
+      }
+    },
   },
 ];
 
