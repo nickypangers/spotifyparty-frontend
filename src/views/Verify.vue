@@ -1,6 +1,7 @@
 <template>
   <div class="verify">
     <p>Loading User...</p>
+    <p>{{status}}</p>
   </div>
 </template>
 
@@ -10,10 +11,16 @@ import $ from "jquery";
 export default {
   name: "Verify",
   components: {},
+  data() {
+    return {
+      status: false
+    }
+  },
   created: function () {
     var code = this.$route.query.code;
 
-    console.log(code);
+    var vue = this
+
     $.ajax({
       type: "post",
       url: "http://localhost:3030/api/addSpotifyUser",
@@ -24,7 +31,9 @@ export default {
         console.log(response);
       },
       success: function (response) {
-        console.log(response);
+        if (response.success) {
+          vue.status = true
+        }
       },
     });
   },
