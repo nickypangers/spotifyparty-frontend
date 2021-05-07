@@ -15,7 +15,12 @@
         <button class="col-lg-6 col-12" @click.prevent="createRoom">
           create a room
         </button>
-        <button class="col-lg-6 col-12">Join a room</button>
+        <button class="col-lg-6 col-12" @click.prevent="joinRoom = !joinRoom">{{ joinRoom ? "Close" : "Join Room" }}</button>
+        <div class="mt-4" v-show="joinRoom">
+          <label for="roomid"></label>
+          <input type="text" id="roomid" placeholder="Enter Room ID" class="col-12">
+          
+        </div>
       </div>
     </div>
 
@@ -66,6 +71,7 @@ export default {
       user: null,
       roomId: "",
       error: "",
+      joinRoom: false,
     };
   },
   created: function () {
