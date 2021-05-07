@@ -2,12 +2,11 @@
   <div class="verify">
     <p>Loading User...</p>
 
-    <button @click="viewUser">View User State</button>
+    <!-- <button @click="viewUser">View User State</button> -->
   </div>
 </template>
 
 <script>
-
 export default {
   name: "Verify",
   components: {},
@@ -27,12 +26,12 @@ export default {
       data: {
         code: code,
       },
-      error: function (response) {
-        console.log(response);
+      error: function () {
+        // console.log(response);
       },
       success: function (response) {
         if (response.success) {
-          console.log(response);
+          // console.log(response);
           vue.$store.commit("addUser", response);
           vue.$router.push({ name: "Lobby" });
         }
@@ -41,7 +40,7 @@ export default {
   },
   methods: {
     viewUser: function () {
-      console.log("user=" + JSON.stringify(this.$store.state.user));
+      // console.log("user=" + JSON.stringify(this.$store.state.user));
     },
   },
 };

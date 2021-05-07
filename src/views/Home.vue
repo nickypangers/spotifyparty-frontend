@@ -17,7 +17,7 @@ export default {
   name: "Home",
   components: {},
   created: function () {
-    console.log("user=" + JSON.stringify(this.$store.state.user));
+    // console.log("user=" + JSON.stringify(this.$store.state.user));
   },
   computed: {
     isAuthenticated: function () {

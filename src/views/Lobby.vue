@@ -4,8 +4,6 @@
       <h1>{{ user.username }}</h1>
       <a :href="user.spotifyProfileLink" target="_blank">Go to profile</a>
       <br />
-      <p>{{ roomId }}</p>
-      <br />
       <div class="row" v-if="isJoinedRoom">
         <button class="col-lg-6 col-12" @click.prevent="enterRoom">
           Enter room
@@ -15,11 +13,20 @@
         <button class="col-lg-6 col-12" @click.prevent="createRoom">
           create a room
         </button>
-        <button class="col-lg-6 col-12" @click.prevent="joinRoom = !joinRoom">{{ joinRoom ? "Close" : "Join Room" }}</button>
-        <div class="mt-4" v-show="joinRoom">
-          <label for="roomid"></label>
-          <input type="text" id="roomid" placeholder="Enter Room ID" class="col-12">
-          
+        <button
+          class="col-lg-6 col-12"
+          @click.prevent="isJoinRoom = !isJoinRoom"
+        >
+          {{ isJoinRoom ? "Close" : "Join Room" }}
+        </button>
+        <div class="mt-4" v-show="isJoinRoom">
+          <input
+            type="text"
+            id="roomid"
+            v-model="roomId"
+            placeholder="Enter Room ID"
+          />
+          <button @click.prevent="joinRoom">Join Room</button>
         </div>
       </div>
     </div>
@@ -71,7 +78,7 @@ export default {
       user: null,
       roomId: "",
       error: "",
-      joinRoom: false,
+      isJoinRoom: false,
     };
   },
   created: function () {
@@ -93,11 +100,11 @@ export default {
       });
     },
     createRoom: function () {
-      console.log("creating room");
+      // console.log("creating room");
 
       var username = this.user.username;
 
-      console.log(username);
+      // console.log(username);
 
       var vue = this;
 
@@ -107,11 +114,11 @@ export default {
         data: {
           username: username,
         },
-        error: function (response) {
-          console.log(response);
+        error: function () {
+          // console.log(response);
         },
         success: function (response) {
-          console.log(response);
+          // console.log(response);
           if (response.success) {
             vue.$store.commit("joinRoom", response.roomId);
             vue.$router.push({
@@ -120,7 +127,40 @@ export default {
             });
           } else {
             vue.error = response.message;
-            console.log(vue.error);
+            // console.log(vue.error);
+            window.$("#exampleModal").modal("show");
+          }
+        },
+      });
+    },
+    joinRoom: function () {
+      var username = this.user.username;
+
+      var roomId = this.roomId;
+
+      var vue = this;
+
+      window.$.ajax({
+        type: "post",
+        url: "http://localhost:3030/api/joinRoom",
+        data: {
+          username: username,
+          roomId: roomId,
+        },
+        error: function (response) {
+          console.log(response);
+        },
+        success: function (response) {
+          // console.log(response);
+          if (response.success) {
+            vue.$store.commit("joinRoom", response.roomId);
+            vue.$router.push({
+              name: "Room",
+              params: { roomId: roomId },
+            });
+          } else {
+            vue.error = response.message;
+            // console.log(vue.error);
             window.$("#exampleModal").modal("show");
           }
         },
