@@ -20,18 +20,18 @@ export default {
     console.log("user=" + JSON.stringify(this.$store.state.user));
   },
   computed: {
-    isAuthenticated: function() {
-      return this.$store.state.user != null
-    }
+    isAuthenticated: function () {
+      return this.$store.state.user != null;
+    },
   },
   methods: {
     verifyUser: function () {
       location.href =
         "https://accounts.spotify.com/authorize?client_id=9fc05552fff74f828d684944657872de&response_type=code&redirect_uri=http://localhost:8080/verify&scope=user-read-email+user-read-private";
     },
-    enterApp: function() {
-      this.$router.push('Lobby')
-    }
+    enterApp: function () {
+      this.$router.push("Lobby");
+    },
   },
 };
 </script>

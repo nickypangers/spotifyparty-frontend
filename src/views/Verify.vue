@@ -7,7 +7,6 @@
 </template>
 
 <script>
-import $ from "jquery";
 
 export default {
   name: "Verify",
@@ -22,7 +21,7 @@ export default {
 
     var vue = this;
 
-    $.ajax({
+    window.$.ajax({
       type: "post",
       url: "http://localhost:3030/api/addSpotifyUser",
       data: {
