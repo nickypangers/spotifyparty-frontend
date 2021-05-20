@@ -50,13 +50,6 @@ const routes = [
     path: "/room/:roomId",
     name: "Room",
     component: () => Room,
-    beforeEnter(to, from, next) {
-      if (isAuthenticated()) {
-        next();
-      } else {
-        next("/");
-      }
-    },
   },
 ];
 
